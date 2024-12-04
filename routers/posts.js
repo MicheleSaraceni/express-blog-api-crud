@@ -1,5 +1,5 @@
-//importo list.js
-const postfunz = require('../controllers/postfunz');
+//importo postController.js
+const postfunz = require('../controllers/postController');
 
 //setto il router
 const express = require("express");

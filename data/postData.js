@@ -1,4 +1,4 @@
-const list = [
+const postData = [
     {
         id: 1,
         title: 'Post1',
@@ -36,4 +36,4 @@ const list = [
     }
 ];
 
-module.exports = list;
+module.exports = postData;

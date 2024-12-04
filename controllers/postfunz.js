@@ -30,7 +30,10 @@ function modify(req, res) {
 };
 
 function destroy(req, res) {
-    res.send('Eliminazione del post' + req.params.id);
+    const id = parseInt(req.params.id);
+    const toBeDeleted = list.find((element) => id === element.id);
+    res.json(toBeDeleted);
+    //res.send('Eliminazione del post' + req.params.id);
 };
 
 module.exports = { index, show, store, update, modify, destroy };

@@ -30,10 +30,25 @@ function modify(req, res) {
 };
 
 function destroy(req, res) {
+    //res.send('Eliminazione del post' + req.params.id);
     const id = parseInt(req.params.id);
     const toBeDeleted = list.find((element) => id === element.id);
-    res.json(toBeDeleted);
-    //res.send('Eliminazione del post' + req.params.id);
+
+    //In caso il post inserito non esiste
+    if (!toBeDeleted) {
+        res.status(404);
+        return res.json({
+            status: 404,
+            error: "Not Found",
+            message: "Post da eliminare non trovata"
+        })
+    }
+
+    //Rimuovo il post dall'array presente in list.js
+    list.splice(list.indexOf(toBeDeleted), 1);
+
+    // Restituiamo lo status corretto
+    res.sendStatus(204)
 };
 
 module.exports = { index, show, store, update, modify, destroy };

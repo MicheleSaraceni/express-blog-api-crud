@@ -13,12 +13,36 @@ function show(req, res) {
         //res.send('Dettagli del post ' + req.params.id);
         res.json(objId);
     } else {
-        res.send("Post non esistente!")
-    }
+        return res.json({
+            status: 404,
+            error: "Not Found",
+            message: "Post non esistente"
+        });
+    };
 };
 
 function store(req, res) {
-    res.send('Creazione nuovo post');
+    //res.send('Creazione nuovo post');
+    //console.log(req.body);
+    const { id, title, content, img, tags } = req.body;
+
+    const postExists = postData.find((post) => post.id === id);
+    if (postExists) {
+        return res.status(409).json({
+            status: 409,
+            error: "Conflict",
+            message: "Un post con questo ID esiste già."
+        });
+    }
+
+    const newPost = { id, title, content, img, tags };
+    postData.push(newPost);
+
+    return res.status(201).json({
+        status: 201,
+        message: "Nuovo post creato con successo!",
+        data: newPost
+    });
 };
 
 function update(req, res) {
@@ -48,7 +72,10 @@ function destroy(req, res) {
     postData.splice(postData.indexOf(toBeDeleted), 1);
 
     // Restituiamo lo status corretto
-    res.sendStatus(204)
+    return res.json({
+        status: 204,
+        message: "Post " + id + " eliminato!"
+    });
 };
 
 module.exports = { index, show, store, update, modify, destroy };

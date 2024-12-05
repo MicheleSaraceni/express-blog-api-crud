@@ -2,6 +2,8 @@
 const express = require('express');
 const server = express();
 
+//Middleware
+server.use(express.json());
 
 // setto la porta
 const PORT = 3000;
@@ -40,5 +42,5 @@ server.all('*', (req, res) => {
 
 
 server.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });

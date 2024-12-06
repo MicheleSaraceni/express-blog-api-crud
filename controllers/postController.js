@@ -46,7 +46,27 @@ function store(req, res) {
 };
 
 function update(req, res) {
-    res.send('Modifica integrale del post ' + req.params.id);
+    //res.send('Modifica integrale del post ' + req.params.id);
+    const id = parseInt(req.params.id);
+    const { title, content, img, tags } = req.body;
+
+    const postId = postData.findIndex((post) => post.id === id);
+    if (postId === -1) {
+        return res.status(404).json({
+            status: 404,
+            error: "Not Found",
+            message: "Post non trovato."
+        });
+    }
+
+    const updatedPost = { ...postData[postId], title, content, img, tags };
+    postData[postId] = updatedPost;
+
+    return res.status(200).json({
+        status: 200,
+        message: "Post aggiornato con successo!",
+        data: updatedPost
+    });
 };
 
 function modify(req, res) {

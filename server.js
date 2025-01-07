@@ -1,46 +1,46 @@
-// importo express
+//------------IMPORT------------
+// Express
+require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
+
 const server = express();
+// Router
+const postsRouter = require('./routers/posts.js');
+// Data e orario di accesso (esempio di una middleware scritta da me)
+const checkTime = require('./middleware/checkTime.js')
+//Error 404 - Pagina non trovata
+const notFound = require('./middleware/notFound.js')
 
-//Middleware
-server.use(express.json());
-
-// setto la porta
-const PORT = 3000;
+//--------Setto la porta---------
+const PORT = process.env.PORT || 3000;
 
 
-//setto le rotte publiche
+//----------MIDDLEWARE-----------
+// Attivo CORS per tutte le rotte
+server.use(cors());
+// Registro le rotte publiche
 server.use(express.static("public"));
+// Registro ...
+server.use(express.json());
+// Registro il router
+server.use("/posts", postsRouter);
+// Registro il checkTime
+server.use(checkTime);
+
+//-------------------------------------------------------------
 
 
-// specializzo il server a rispondere alla richiesta GET
+// Specializzo il server a rispondere alla richiesta GET
 server.get("/", (req, res) => {
+    checkTime;
     res.send("<h1>Server del mio Blog</h1>");
 });
 
+// Registro il notFound
+server.use(notFound);
 
-//setto il router
-const postsRouter = require('./routers/posts.js');
-server.use("/posts", postsRouter);
-
-/*
-server.get("/bacheca", (req, res) => {
-    console.log(res.list);
-
-    const responseObject = {
-        lunghezza: list.length,
-        list
-    }
-
-    res.json(responseObject);
-});
-*/
-
-server.all('*', (req, res) => {
-    res.status(404).send('<h1>Not Found !</h1>');
-})
-
-
+// Collego il mio server alla porta
 server.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });

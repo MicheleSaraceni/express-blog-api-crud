@@ -28,9 +28,9 @@ function store(req, res) {
 
     const postExists = postData.find((post) => post.id === id);
     if (postExists) {
-        return res.status(409).json({
-            status: 409,
-            error: "Conflict",
+        return res.status(404).json({
+            status: 404,
+            error: "Not Found",
             message: "Un post con questo ID esiste già."
         });
     }
